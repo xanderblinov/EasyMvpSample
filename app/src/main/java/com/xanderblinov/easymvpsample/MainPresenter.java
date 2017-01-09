@@ -16,30 +16,62 @@ class MainPresenter extends AbstractPresenter<MainView> {
 
     private static String TAG = "MainPresenter";
 
+    volatile private boolean mIsAlive = true;
+
     public MainPresenter() {
 
-        new Handler(Looper.getMainLooper()).postDelayed(new MainRunnable(0), 1000);
+        new MainRunnable().start();
     }
 
-    private class MainRunnable implements Runnable {
+    @Override
+    public void onViewAttached(final MainView view) {
+        super.onViewAttached(view);
+        Log.e(TAG, "onViewAttached : " + view);
+
+    }
+
+    @Override
+    public void onViewDetached() {
+        super.onViewDetached();
+        Log.e(TAG, "onViewDetached ");
+    }
+
+    @Override
+    public void onDestroyed() {
+        super.onDestroyed();
+        Log.e(TAG, "onDestroyed ");
+        mIsAlive = false;
+
+    }
+
+    private class MainRunnable extends Thread {
 
         int mCount;
 
-        MainRunnable(int count) {
-            mCount = count;
-        }
-
         @Override
         public void run() {
-            Log.e(TAG, "view attached : " + isViewAttached());
-            MainView view = getView();
 
-            if (view != null) {
-                view.showResult(String.valueOf(mCount));
+            while (mIsAlive) {
+                Log.e(TAG, "view attached : " + isViewAttached());
+                final MainView view = getView();
+
+                if (view != null) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.showResult(String.valueOf(mCount));
+                        }
+                    });
+                }
+                mCount++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignore) {
+
+                }
             }
 
 
-            new Handler(Looper.getMainLooper()).postDelayed(new MainRunnable(mCount + 1), 1000);
         }
     }
 }
