@@ -34,12 +34,10 @@ class MainPresenter extends AbstractPresenter<MainView> {
             Log.e(TAG, "view attached : " + isViewAttached());
             MainView view = getView();
 
-            if (view == null) {
-                Log.e(TAG, "CAN NOT execute on null view");
-                return;
+            if (view != null) {
+                view.showResult(String.valueOf(mCount));
             }
 
-            view.showResult(String.valueOf(mCount));
 
             new Handler(Looper.getMainLooper()).postDelayed(new MainRunnable(mCount + 1), 1000);
         }

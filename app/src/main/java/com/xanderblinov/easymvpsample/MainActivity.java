@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showResult(final String resultText) {
-        Log.e(TAG, "RESULT" + resultText);
+        Log.e(TAG, "RESULT: " + resultText);
     }
 
     @Override
@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onStart() {
         super.onStart();
 
-        Log.e(TAG, "mMainPresenter = " + mMainPresenter);
+        Log.e(TAG, "OnStart: mMainPresenter = " + mMainPresenter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        Log.e(TAG, "mMainPresenter = " + mMainPresenter);
+        Log.e(TAG, "OnStop: mMainPresenter = " + mMainPresenter);
     }
 }
